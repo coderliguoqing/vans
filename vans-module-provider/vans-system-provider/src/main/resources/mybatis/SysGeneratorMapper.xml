@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.guoqing.vans.system.provider.mapper.SysGeneratorMapper">
+
+	<select id="queryTable" resultType="map">
+		select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables
+		where table_schema = (select database()) and table_name = #{tableName}
+	</select>
+
+	<select id="queryColumns" resultType="map">
+		select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra from information_schema.columns
+ 			where table_name = #{tableName} and table_schema = (select database()) order by ordinal_position
+	</select>
+
+
+	<!-- 分页查询表信息 -->
+	<select id="findList" resultType="cn.com.guoqing.vans.system.api.entity.SysTable">
+		select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables a
+		WHERE table_schema = (select database())
+		<if test="tableName != null and tableName != ''">
+			AND a.table_name like CONCAT('%', #{tableName}, '%')
+		</if>
+		ORDER BY a.create_time
+	</select>
+</mapper>

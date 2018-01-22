@@ -1,0 +1,36 @@
+server:
+  port: 8087
+  
+spring:
+  dubbo:
+    application:
+      name: admin-web-Provider #应用名
+    registry:
+      address: zookeeper://192.168.240.15:2181?backup=192.168.240.15:2182,192.168.240.15:2183  #zk地址
+    protocol:
+      name: dubbo #协议名
+      port: 20887 #协议端口
+    scan: cn.com.guoqing.vans.admin.timer #扫描包名
+  redis:
+    database: 0
+    host: 192.168.240.36
+    port: 6379
+    password: dXzMHN2MaHUX
+    pool:
+      max-active: -1
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+    timeout: 0
+  
+rest:
+  auth-open: true #jwt鉴权机制是否开启(true或者false)
+  sign-open: true #签名机制是否开启(true或false)
+  
+jwt:
+  header: Authorization   #http请求头所需要的字段
+  secret: mySecret        #jwt秘钥
+  expiration: 604800      #7天 单位:秒
+  #过滤器不拦截的路径
+  auth-path: /kaptcha/generate,/auth/token      
+  md5-key: randomKey      #md5加密混淆key

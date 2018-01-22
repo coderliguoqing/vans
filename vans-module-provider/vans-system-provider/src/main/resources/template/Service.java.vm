@@ -1,0 +1,28 @@
+package ${package}.api.service;
+
+import ${package}.api.entity.${className}Entity;
+
+import com.github.pagehelper.PageInfo;
+import cn.com.guoqing.vans.common.api.Paging;
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+public interface I${className}Service {
+
+
+    //分页查询
+    PageInfo<${className}Entity> find${className}Page(Paging page, ${className}Entity ${classname});
+
+	${className}Entity get(${pk.attrType} ${pk.attrname});
+	
+	int insert(${className}Entity ${classname});
+
+    int update(${className}Entity ${classname});
+	
+	int deleteById(${pk.attrType} ${pk.attrname});
+}

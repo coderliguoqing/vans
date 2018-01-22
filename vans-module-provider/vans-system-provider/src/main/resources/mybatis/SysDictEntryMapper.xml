@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.guoqing.vans.system.provider.mapper.SysDictEntryMapper">
+  <resultMap id="DictResultMap" type="cn.com.guoqing.vans.system.api.entity.SysDictEntry">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="dicttype_id" jdbcType="VARCHAR" property="dicttypeId" />
+    <result column="dict_id" jdbcType="VARCHAR" property="dictId" />
+    <result column="dict_name" jdbcType="VARCHAR" property="dictName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+  </resultMap>
+  
+  <sql id="selectColumns">
+  	select id, dicttype_id, dict_id, dict_name, status, sort, create_date, update_date, del_flag from sys_dict_entry
+  </sql>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_dict_entry
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.com.guoqing.vans.system.api.entity.SysDictEntry">
+    insert into sys_dict_entry (id, dicttype_id, dict_id, 
+      dict_name, status, sort, 
+      create_date, update_date, del_flag
+      )
+    values (#{id,jdbcType=VARCHAR}, #{dicttypeId,jdbcType=VARCHAR}, #{dictId,jdbcType=VARCHAR}, 
+      #{dictName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  
+  <update id="update" parameterType="cn.com.guoqing.vans.system.api.entity.SysDictEntry">
+    update sys_dict_entry
+    set dicttype_id = #{dicttypeId,jdbcType=VARCHAR},
+      dict_id = #{dictId,jdbcType=VARCHAR},
+      dict_name = #{dictName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="DictResultMap">
+    <include refid="selectColumns"/>
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findList" resultMap="DictResultMap">
+    <include refid="selectColumns"/>
+    WHERE del_flag = '0'
+    <if test="dicttypeId != null and dicttypeId != ''">
+        AND dicttype_id like CONCAT('%', #{dicttypeId}, '%')
+    </if>
+    <if test="dictId != null and dictId != ''">
+        AND dict_id like CONCAT('%', #{dictId}, '%')
+    </if>
+    <if test="dictName != null and dictName != ''">
+        AND dict_name like CONCAT('%', #{dictName}, '%')
+    </if>
+    ORDER BY create_date
+  </select>
+  
+  <select id="findAllList" resultMap="DictResultMap">
+    <include refid="selectColumns"/>
+        WHERE a.del_flag = '0'
+        ORDER BY a.create_date
+  </select>
+  
+  <update id="deleteById">
+    update sys_dict_entry set del_flag = '1' where id =  #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getDictEntryByTypeIdAndId" parameterType="java.util.HashMap" resultMap="DictResultMap">
+  		<include refid="selectColumns"/>
+  			WHERE del_flag = '0' and dicttype_id = #{dicttypeId} and dict_id = #{dictId} limit 1
+  </select>
+  
+</mapper>

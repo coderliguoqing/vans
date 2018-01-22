@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.guoqing.vans.system.provider.mapper.SysScheduleParaMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.com.guoqing.vans.system.api.entity.SysScheduleParaEntity" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="jobId" column="job_id"/>
+        <result property="paramValue" column="param_value"/>
+        <result property="sortno" column="sortno"/>
+        <result property="remark" column="remark"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    
+    <sql id="selectColumns">
+  		select 
+  		id,   		
+  		job_id,   		
+  		param_value,   		
+  		sortno,   		
+  		remark,   		
+  		create_date,   		
+  		update_date,   		
+  		del_flag  		
+  		from sys_schedule_para a
+	</sql>
+
+    <select id="get" resultMap="BaseResultMap">
+        <include refid="selectColumns"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- 查询有效数据列表，可分页查询 -->
+    <select id="findList" resultMap="BaseResultMap">
+       <include refid="selectColumns"/>
+        WHERE a.del_flag = '0'
+        order by id desc
+    </select>
+    
+    <select id="findAllList" resultMap="BaseResultMap">
+    	<include refid="selectColumns"/>
+        order by id desc
+    </select>
+
+	 
+	<insert id="insert" parameterType="cn.com.guoqing.vans.system.api.entity.SysScheduleParaEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_schedule_para
+		(
+			`job_id`, 
+			`param_value`, 
+			`sortno`, 
+			`remark`, 
+			`create_date`, 
+			`update_date`, 
+			`del_flag`
+		)
+		values
+		(
+			#{jobId}, 
+			#{paramValue}, 
+			#{sortno}, 
+			#{remark}, 
+			#{createDate}, 
+			#{updateDate}, 
+			#{delFlag}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.com.guoqing.vans.system.api.entity.SysScheduleParaEntity">
+		update sys_schedule_para 
+		<set>
+			<if test="jobId != null">`job_id` = #{jobId}, </if>
+			<if test="paramValue != null">`param_value` = #{paramValue}, </if>
+			<if test="sortno != null">`sortno` = #{sortno}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	
+	<delete id="deleteById">
+        UPDATE sys_schedule_para  SET del_flag = '1' where id  = #{id}
+	</delete>
+	
+	<!-- 查询有效数据列表，可分页查询 -->
+    <select id="getListByJobId" resultMap="BaseResultMap">
+       <include refid="selectColumns"/>
+        WHERE a.del_flag = '0'
+        and a.job_id = #{jobId}
+        order by id asc
+    </select>
+    
+    <delete id="deleteByJobId">
+        UPDATE sys_schedule_para  SET del_flag = '1' where job_id  = #{jobId}
+	</delete>
+
+</mapper>

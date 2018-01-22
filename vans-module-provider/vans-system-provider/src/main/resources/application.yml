@@ -1,0 +1,88 @@
+spring.dubbo:
+  application:
+    name: system-Service-Provider #应用名
+  registry:
+    address: zookeeper://192.168.240.15:2181?backup=192.168.240.15:2182,192.168.240.15:2183  #zk地址
+  protocol:
+    name: dubbo #协议名
+    port: 20881 #协议端口
+  scan: cn.com.guoqing.vans.system.provider #扫描包名
+  
+server:
+  port: 8081
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mybatis/*.xml
+  
+spring:
+  datasource:
+    write:
+      url: jdbc:mysql://192.168.240.20:3306/vans?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+      username: root
+      password: bpms123
+#      url: jdbc:mysql://192.168.240.4:8066/onlineManagement?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+#      username: onlineManagementUser
+#      password: uAfc8goV
+      driver-class-name: com.mysql.jdbc.Driver
+      max-active: 20
+      initial-size: 1
+      min-idle: 3
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x' FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=3000
+      # 合并多个DruidDataSource的监控数据
+      #spring.datasource.useGlobalDataSourceStat=true
+    read:
+      url: jdbc:mysql://192.168.240.20:3306/vans?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+      username: root
+      password: bpms123
+#      url: jdbc:mysql://192.168.240.4:8066/onlineManagement?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+#      username: onlineManagementUser
+#      password: uAfc8goV
+      driver-class-name: com.mysql.jdbc.Driver
+      max-active: 20
+      initial-size: 1
+      min-idle: 3
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x' FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=3000
+      # 合并多个DruidDataSource的监控数据
+      #spring.datasource.useGlobalDataSourceStat=true
+      
+  # Redis数据库索引（默认为0）
+  redis:
+    database: 0  
+    # Redis服务器地址
+    host: 192.168.240.36
+    # Redis服务器连接端口
+    port: 6379  
+    # Redis服务器连接密码（默认为空）
+    password: dXzMHN2MaHUX
+    # 连接池最大连接数（使用负值表示没有限制）
+    pool:
+      max-active: 8  
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      # 连接池中的最大空闲连接
+      max-idle: 8
+      # 连接池中的最小空闲连接
+      min-idle: 0  
+    # 连接超时时间（毫秒）
+    timeout: 0

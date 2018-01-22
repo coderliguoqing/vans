@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.guoqing.vans.system.provider.mapper.SysScheduleLogMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.com.guoqing.vans.system.api.entity.SysScheduleLogEntity" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="jobId" column="job_id"/>
+        <result property="jobName" column="job_name"/>
+        <result property="jobGroup" column="job_group"/>
+        <result property="beanClass" column="bean_class"/>
+        <result property="methodName" column="method_name"/>
+        <result property="beanId" column="bean_id"/>
+        <result property="paraValue" column="para_value"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="runTime" column="run_time"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    
+    <sql id="selectColumns">
+  		select 
+  		id,   		
+  		job_id,   		
+  		job_name,   		
+  		job_group,   		
+  		bean_class,   		
+  		method_name,   		
+  		bean_id,   		
+  		para_value,   		
+  		start_time,   		
+  		end_time,   		
+  		run_time,   		
+  		create_date,   		
+  		update_date,   		
+  		del_flag  		
+  		from sys_schedule_log a
+	</sql>
+
+    <select id="get" resultMap="BaseResultMap">
+        <include refid="selectColumns"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- 查询有效数据列表，可分页查询 -->
+    <select id="findList" resultMap="BaseResultMap">
+       <include refid="selectColumns"/>
+        WHERE a.del_flag = '0'
+        order by id desc
+    </select>
+    
+    <select id="findAllList" resultMap="BaseResultMap">
+    	<include refid="selectColumns"/>
+        order by id desc
+    </select>
+
+	 
+	<insert id="insert" parameterType="cn.com.guoqing.vans.system.api.entity.SysScheduleLogEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_schedule_log
+		(
+			`job_id`, 
+			`job_name`, 
+			`job_group`, 
+			`bean_class`, 
+			`method_name`, 
+			`bean_id`, 
+			`para_value`, 
+			`start_time`, 
+			`end_time`, 
+			`run_time`, 
+			`create_date`, 
+			`update_date`, 
+			`del_flag`
+		)
+		values
+		(
+			#{jobId}, 
+			#{jobName}, 
+			#{jobGroup}, 
+			#{beanClass}, 
+			#{methodName}, 
+			#{beanId}, 
+			#{paraValue}, 
+			#{startTime}, 
+			#{endTime}, 
+			#{runTime}, 
+			#{createDate}, 
+			#{updateDate}, 
+			#{delFlag}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.com.guoqing.vans.system.api.entity.SysScheduleLogEntity">
+		update sys_schedule_log 
+		<set>
+			<if test="jobId != null">`job_id` = #{jobId}, </if>
+			<if test="jobName != null">`job_name` = #{jobName}, </if>
+			<if test="jobGroup != null">`job_group` = #{jobGroup}, </if>
+			<if test="beanClass != null">`bean_class` = #{beanClass}, </if>
+			<if test="methodName != null">`method_name` = #{methodName}, </if>
+			<if test="beanId != null">`bean_id` = #{beanId}, </if>
+			<if test="paraValue != null">`para_value` = #{paraValue}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="runTime != null">`run_time` = #{runTime}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	
+	<delete id="deleteById">
+        UPDATE sys_schedule_log  SET del_flag = '1' where id  = #{id}
+	</delete>
+
+</mapper>

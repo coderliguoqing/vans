@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.guoqing.vans.system.provider.mapper.SysScheduleJobMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="cn.com.guoqing.vans.system.api.entity.SysScheduleJobEntity" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="jobName" column="job_name"/>
+        <result property="jobGroup" column="job_group"/>
+        <result property="jobStatus" column="job_status"/>
+        <result property="cronExpression" column="cron_expression"/>
+        <result property="description" column="description"/>
+        <result property="beanClass" column="bean_class"/>
+        <result property="isConcurrent" column="is_concurrent"/>
+        <result property="springId" column="spring_id"/>
+        <result property="methodName" column="method_name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+    </resultMap>
+    
+    <sql id="selectColumns">
+  		select 
+  		id,   		
+  		job_name,   		
+  		job_group,   		
+  		job_status,   		
+  		cron_expression,   		
+  		description,   		
+  		bean_class,   		
+  		is_concurrent,   		
+  		spring_id,   		
+  		method_name,   		
+  		create_date,   		
+  		update_date  		
+  		from sys_schedule_job a
+	</sql>
+
+    <select id="get" resultMap="BaseResultMap">
+        <include refid="selectColumns"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- 查询有效数据列表，可分页查询 -->
+    <select id="findList" resultMap="BaseResultMap">
+       <include refid="selectColumns"/>
+        WHERE a.del_flag = '0'
+        order by id desc
+    </select>
+    
+    <select id="findAllList" resultMap="BaseResultMap">
+    	<include refid="selectColumns"/>
+        order by id desc
+    </select>
+
+	 
+	<insert id="insert" parameterType="cn.com.guoqing.vans.system.api.entity.SysScheduleJobEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_schedule_job
+		(
+			`job_name`, 
+			`job_group`, 
+			`job_status`, 
+			`cron_expression`, 
+			`description`, 
+			`bean_class`, 
+			`is_concurrent`, 
+			`spring_id`, 
+			`method_name`, 
+			`create_date`, 
+			`update_date`
+		)
+		values
+		(
+			#{jobName}, 
+			#{jobGroup}, 
+			#{jobStatus}, 
+			#{cronExpression}, 
+			#{description}, 
+			#{beanClass}, 
+			#{isConcurrent}, 
+			#{springId}, 
+			#{methodName}, 
+			#{createDate}, 
+			#{updateDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.com.guoqing.vans.system.api.entity.SysScheduleJobEntity">
+		update sys_schedule_job 
+		<set>
+			<if test="jobName != null">`job_name` = #{jobName}, </if>
+			<if test="jobGroup != null">`job_group` = #{jobGroup}, </if>
+			<if test="jobStatus != null">`job_status` = #{jobStatus}, </if>
+			<if test="cronExpression != null">`cron_expression` = #{cronExpression}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="beanClass != null">`bean_class` = #{beanClass}, </if>
+			<if test="isConcurrent != null">`is_concurrent` = #{isConcurrent}, </if>
+			<if test="springId != null">`spring_id` = #{springId}, </if>
+			<if test="methodName != null">`method_name` = #{methodName}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	
+	<delete id="deleteById">
+        UPDATE sys_schedule_job  SET del_flag = '1' where id  = #{id}
+	</delete>
+	
+	<!-- 查询有效数据列表，可分页查询 -->
+    <select id="getJobByPara" resultMap="BaseResultMap">
+       <include refid="selectColumns"/>
+        WHERE a.del_flag = '0'
+        and a.bean_class = #{beanClass}
+        and a.method_name = #{methodName}
+        limit 1
+    </select>
+    
+    <!-- 查询有效数据列表，可分页查询 -->
+    <select id="getJobBySpringId" resultMap="BaseResultMap">
+       <include refid="selectColumns"/>
+        WHERE a.del_flag = '0'
+        and a.spring_id = #{springId}
+		order by id asc
+    </select>
+
+</mapper>

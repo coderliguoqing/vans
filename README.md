@@ -33,4 +33,5 @@ http://localhost:8088/sys/generator/code?tables=sys_operation_log&package=cn.com
   10、Redis
 
 # 效果图
- ![image](https://github.com/coderliguoqing/vans/blob/master/)
+ ![image](https://github.com/coderliguoqing/vans/tree/master/vans-admin-web/src/main/webapp/img/view_2.png)
+ ![image](https://github.com/coderliguoqing/vans/tree/master/vans-admin-web/src/main/webapp/img/view_1.png)

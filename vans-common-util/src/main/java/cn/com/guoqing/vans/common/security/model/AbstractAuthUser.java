@@ -12,11 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @Date 2018年1月16日
  */
 public abstract class AbstractAuthUser implements UserDetails {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
 	@Override

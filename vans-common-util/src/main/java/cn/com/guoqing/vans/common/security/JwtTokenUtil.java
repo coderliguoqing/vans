@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 
 import cn.com.guoqing.vans.common.redis.RedisRepository;
 import cn.com.guoqing.vans.common.util.RandomHelper;
@@ -144,9 +144,7 @@ public abstract class JwtTokenUtil {
 		String token = doGenerateToken(claims, userDetails);
 		//将生成的token存入redis做唯一性校验
 		redisRepository.setExpire("user_auth_token_"+userDetails.getUsername(), token, expiration);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("user", userDetails);
-		redisRepository.setExpire("user_auth_info_"+userDetails.getUsername(), jsonObject.toJSONString(), expiration );
+		redisRepository.setExpire("user_auth_info_"+userDetails.getUsername(), new Gson().toJson(userDetails), expiration );
 		return token;
 	}
 	
@@ -192,11 +190,7 @@ public abstract class JwtTokenUtil {
 	 * @param token
 	 * @return
 	 */
-	public UserDetails getUserDetails(String token){
-		String userName = getUsernameFromToken(token);
-		String user = redisRepository.get("user_auth_info_"+userName);
-		return JSONObject.parseObject(user, UserDetails.class);
-	}
+	public abstract UserDetails getUserDetails(String token);
 
 	public String getHeader() {
 		return header;

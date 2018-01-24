@@ -51,7 +51,7 @@ public class AuthenticationTokenFilter extends GenericFilterBean {
 		final String authToken = StringHelper.substring(authHeader, 7);
         String username = StringHelper.isNotBlank(authToken) ? jwtTokenUtil.getUsernameFromToken(authToken) : null;
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtTokenUtil.isTokenExpired(authToken)) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && !jwtTokenUtil.isTokenExpired(authToken)) {
             UserDetails userDetails = jwtTokenUtil.getUserDetails(authToken);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));

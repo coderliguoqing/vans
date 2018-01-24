@@ -115,7 +115,7 @@ public class AuthController extends BaseController{
 			final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			final String token = jwtTokenUtil.generateToken(userDetails, jwtTokenUtil.getRandomKey());
 			
-			return new ResponseBean(true, 0, "登录成功", token);
+			return new ResponseBean(true, 0, "登录成功", JwtTokenUtil.TOKEN_TYPE_BEARER + " " + token);
 		} catch (UsernameNotFoundException e) {
 			LOGGER.info("用户认证失败：" + "userName wasn't in the system");
 			return new ResponseBean(false, 1004, "用户名或密码错误", null);
@@ -344,7 +344,6 @@ public class AuthController extends BaseController{
      * @return
      * @throws BusinessException
      */
-    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/user/changeSkins")
     public ResponseBean changeSkins(@RequestBody String skins ){
     	AuthUser authUser = WebUtils.getCurrentUser();
@@ -358,7 +357,6 @@ public class AuthController extends BaseController{
     	return new ResponseBean(true, 0 ,"请求成功", null);
     }
     
-    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/user/getSkins")
     public Map<String, Object> getSkins() {
     	Map<String, Object> resultMap = new HashMap<>();
@@ -385,7 +383,7 @@ public class AuthController extends BaseController{
 			List<SysRole> unAuthList = systemService.getUnAuthList(userId);
 			result.put("authList", authList);
 			result.put("unAuthList", unAuthList);
-	        return new ResponseBean(true, 0, "请求成功", null);
+	        return new ResponseBean(true, 0, "请求成功", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 	        return new ResponseBean(false, 1001, "网络繁忙，请稍后再试", null);

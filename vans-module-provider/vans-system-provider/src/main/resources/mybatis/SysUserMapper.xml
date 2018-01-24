@@ -11,8 +11,6 @@
         <result property="name" column="name"/>
         <result property="email" column="email"/>
         <result property="phone" column="phone"/>
-        <result property="companyCode" column="company_code"/>
-        <result property="companyName" column="company_name"/>
         <result property="mobile" column="mobile"/>
         <result property="enabled" column="enabled"/>
         <result property="remarks" column="remarks"/>
@@ -28,9 +26,7 @@
   		password,   		
   		name,   		
   		email,   		
-  		phone,   		
-  		company_code,   		
-  		company_name,   		
+  		phone,   		   		
   		mobile,   		
   		enabled,   		
   		remarks,   		
@@ -49,11 +45,18 @@
     <select id="findList" resultMap="BaseResultMap">
        <include refid="selectColumns"/>
         WHERE a.del_flag = '0'
+        <if test="loginName != null and loginName != ''">
+            AND a.login_name like CONCAT('%', #{loginName}, '%')
+        </if>
+        <if test="name != null and name != ''">
+            AND a.name like CONCAT('%', #{name}, '%')
+        </if>
         order by id desc
     </select>
     
     <select id="findAllList" resultMap="BaseResultMap">
     	<include refid="selectColumns"/>
+    	WHERE a.del_flag = '0'
         order by id desc
     </select>
 
@@ -114,8 +117,98 @@
 	</update>
 
 	
-	<delete id="deleteById">
-        UPDATE sys_user  SET del_flag = '1' where id  = #{id}
-	</delete>
+	<!-- 保存用户信息 -->
+    <update id="updateInfo">
+        UPDATE sys_user
+        <set>
+        	company_code = #{companyCode},
+            company_name = #{companyName},
+            name = #{name},
+            email = #{email},
+            phone = #{phone},
+            mobile = #{mobile},
+            update_date = #{updateDate},
+            remarks = #{remarks}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 更新用户密码 -->
+    <update id="updatePasswordById">
+        UPDATE sys_user
+        SET
+            password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除用户 -->
+    <update id="deleteById">
+        UPDATE sys_user
+        SET del_flag = '1'
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除用户和角色关联表数据 -->
+    <delete id="deleteUserRole">
+        DELETE FROM sys_user_role
+        WHERE user_id = #{id}
+    </delete>
+
+    <!-- 插入用户和角色关联表数据 -->
+    <insert id="insertUserRole">
+        INSERT INTO sys_user_role(user_id, role_id)
+        <foreach collection="roles" item="role" separator=" union all ">
+            SELECT #{id}, #{role.id} FROM dual
+        </foreach>
+    </insert>
+    
+    <select id="getAuthList" resultType="cn.com.guoqing.vans.system.api.entity.SysRole">
+    	SELECT
+			b.id as id,
+			b.code as code,
+			b.name as name
+		FROM
+			sys_user_role a
+		INNER JOIN sys_role b ON a.role_id = b.id and b.del_flag = '0'
+		WHERE
+			a.user_id = #{userId}
+    </select>
+    
+    <select id="getUnAuthList" resultType="cn.com.guoqing.vans.system.api.entity.SysRole">
+        SELECT
+			c.id as id,
+			c.code as code,
+			c.name as name
+		FROM
+			sys_role c
+		WHERE
+			c.del_flag = '0'
+		AND c.id NOT IN (
+			SELECT
+				b.id AS id
+			FROM
+				sys_user_role a
+			INNER JOIN sys_role b ON a.role_id = b.id
+			AND b.del_flag = '0'
+			WHERE
+				a.user_id = #{userId}
+		)
+    </select>
+    
+    <insert id="addAuthInfo" parameterType="Map">
+        INSERT INTO sys_user_role(user_id, role_id) values(#{userId}, #{roleId});
+    </insert>
+    
+    <!-- 删除用户和角色关联表数据 -->
+    <delete id="cancelAuthInfo" parameterType="Map">
+        DELETE FROM sys_user_role
+        WHERE user_id = #{userId} and role_id = #{roleId}
+    </delete>
+    
+    <!-- 根据登录名查询用户 -->
+    <select id="getByLoginName" resultType="cn.com.guoqing.vans.system.api.entity.SysUser">
+        <include refid="selectColumns"/>
+        WHERE a.login_name = #{loginName}
+    </select>
 
 </mapper>

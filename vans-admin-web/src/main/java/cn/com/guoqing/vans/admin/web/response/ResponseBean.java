@@ -35,11 +35,11 @@ public class ResponseBean {
 		this.data = data;
 	}
 
-	public boolean isSuccess() {
+	public boolean getIsSuccess() {
 		return isSuccess;
 	}
 
-	public void setSuccess(boolean isSuccess) {
+	public void setIsSuccess(boolean isSuccess) {
 		this.isSuccess = isSuccess;
 	}
 

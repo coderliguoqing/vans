@@ -49,6 +49,18 @@
     <select id="findList" resultMap="BaseResultMap">
        <include refid="selectColumns"/>
         WHERE a.del_flag = '0'
+        <if test="jobName != null and jobName != ''">
+        	and `job_name` like CONCAT('%', #{jobName}, '%')
+        </if>
+		<if test="jobGroup != null and jobGroup != ''">
+			and `job_group` like CONCAT('%', #{jobGroup}, '%')
+		</if>
+		<if test="beanClass != null and beanClass != ''">
+			and `bean_class` like CONCAT('%', #{beanClass}, '%')
+		</if>
+		<if test="methodName != null and methodName != ''">
+			and `method_name` like CONCAT('%', #{methodName}, '%')
+		</if>
         order by id desc
     </select>
     

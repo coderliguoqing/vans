@@ -2,6 +2,9 @@ package cn.com.guoqing.vans.system.api.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
+
+import cn.com.guoqing.vans.common.api.Paging;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleJobEntity;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleLogEntity;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleParaEntity;
@@ -62,8 +65,6 @@ public interface ISysScheduleJobService {
 	 */
 	public void updateCron(Integer jobId, String cron) throws Exception;
 	
-	
-	
 	/**
 	 * 
 	 * <p>Description:添加job的参数</p>
@@ -71,7 +72,6 @@ public interface ISysScheduleJobService {
 	 * return:void
 	 */
 	public boolean addJobPara(List<SysScheduleParaEntity> list) throws Exception;
-	
 	
 	/**
 	 * 
@@ -115,5 +115,28 @@ public interface ISysScheduleJobService {
 	 * @param id
 	 */
 	public void deleteJobById( Integer id );
+	
+	/**
+	 * 分页查询job
+	 * @param page
+	 * @param jobEntity
+	 * @return
+	 */
+	public PageInfo<SysScheduleJobEntity> findJobPage(Paging page, SysScheduleJobEntity jobEntity);
+	
+	/**
+	 * 分页查询joblog
+	 * @param page
+	 * @param logEntity
+	 * @return
+	 */
+	public PageInfo<SysScheduleLogEntity> findLogPage(Paging page, SysScheduleLogEntity logEntity);
+	
+	/**
+	 * 根据jobId获取任务参数
+	 * @param jobId
+	 * @return
+	 */
+	public List<SysScheduleParaEntity> getParaList(int jobId);
 	
 }

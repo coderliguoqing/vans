@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.guoqing.vans.system.provider.mapper.SysScheduleJobMapper;
 import cn.com.guoqing.vans.system.provider.mapper.SysScheduleLogMapper;
 import cn.com.guoqing.vans.system.provider.mapper.SysScheduleParaMapper;
+import cn.com.guoqing.vans.common.api.Paging;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleJobEntity;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleLogEntity;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleParaEntity;
@@ -152,6 +156,25 @@ public class SysScheduleServiceImpl implements ISysScheduleJobService {
 	@Transactional(readOnly = false)
 	public void deleteJobById(Integer id) {
 		scheduleJobMapper.deleteById(id);
+	}
+
+	@Override
+	public PageInfo<SysScheduleJobEntity> findJobPage(Paging page, SysScheduleJobEntity jobEntity) {
+		PageHelper.startPage(page.getPageNum(), page.getPageSize(), true, true);
+		List<SysScheduleJobEntity> list = scheduleJobMapper.findList(jobEntity);
+		return new PageInfo<>(list);
+	}
+	
+	@Override
+	public PageInfo<SysScheduleLogEntity> findLogPage(Paging page, SysScheduleLogEntity logEntity){
+		PageHelper.startPage(page.getPageNum(), page.getPageSize(), true, true);
+		List<SysScheduleLogEntity> list = scheduleLogMapper.findList(logEntity);
+		return new PageInfo<>(list);
+	}
+
+	@Override
+	public List<SysScheduleParaEntity> getParaList(int jobId) {
+		return scheduleParaMapper.getListByJobId(jobId);
 	}
 	
 }

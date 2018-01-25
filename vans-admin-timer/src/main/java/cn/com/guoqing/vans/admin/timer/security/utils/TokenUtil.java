@@ -14,7 +14,7 @@ import cn.com.guoqing.vans.common.security.JwtTokenUtil;
 @Component
 @ConfigurationProperties("jwt")
 public class TokenUtil extends JwtTokenUtil {
-
+	
 	@Autowired
 	private RedisRepository redisRepository;
 	
@@ -29,5 +29,4 @@ public class TokenUtil extends JwtTokenUtil {
 		return new Gson().fromJson(user, AuthUser.class);
 	}
 
-	
 }

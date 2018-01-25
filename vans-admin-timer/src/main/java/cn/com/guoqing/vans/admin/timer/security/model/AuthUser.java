@@ -17,10 +17,6 @@ import java.util.Collection;
  */
 public class AuthUser extends AbstractAuthUser {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	/**
      * id
      */
@@ -68,8 +64,8 @@ public class AuthUser extends AbstractAuthUser {
      * 锁定
      */
     private boolean enabled;
-
-    public AuthUser(Integer id) {
+    
+	public AuthUser(Integer id) {
         this.id = id;
     }
 

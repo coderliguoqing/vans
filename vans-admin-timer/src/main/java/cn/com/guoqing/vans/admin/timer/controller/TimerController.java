@@ -31,13 +31,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 
 import cn.com.guoqing.vans.admin.timer.factory.QuartzJobFactory;
 import cn.com.guoqing.vans.admin.timer.response.ResponseBean;
 import cn.com.guoqing.vans.admin.timer.service.JobService;
+import cn.com.guoqing.vans.common.api.Paging;
 import cn.com.guoqing.vans.common.redis.RedisRepository;
 import cn.com.guoqing.vans.common.util.SpringContextHolder;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleJobEntity;
+import cn.com.guoqing.vans.system.api.entity.SysScheduleLogEntity;
 import cn.com.guoqing.vans.system.api.entity.SysScheduleParaEntity;
 import cn.com.guoqing.vans.system.api.service.ISysScheduleJobService;
 
@@ -64,6 +67,42 @@ public class TimerController {
 	@Autowired
 	@Qualifier("Scheduler")
 	private Scheduler scheduler;
+	
+	/**
+	 * 获取定时任务列表
+	 * @param jsonObject
+	 * @return
+	 */
+	@PostMapping(value="/job/list")
+	public PageInfo<SysScheduleJobEntity> jobList( @RequestBody JSONObject jsonObject ){
+		SysScheduleJobEntity jobEntity = JSONObject.parseObject(jsonObject.getJSONObject("job").toJSONString(), SysScheduleJobEntity.class);
+		Paging page = (Paging) JSONObject.parseObject(jsonObject.getJSONObject("page").toJSONString(), Paging.class);
+		return scheduleJobService.findJobPage(page, jobEntity);
+	}
+	
+	/**
+	 * 获取日志列表
+	 * @param jsonObject
+	 * @return
+	 */
+	@PostMapping(value="/log/list")
+	public PageInfo<SysScheduleLogEntity> logList( @RequestBody JSONObject jsonObject ){
+		SysScheduleLogEntity logEntity = JSONObject.parseObject(jsonObject.getJSONObject("log").toJSONString(), SysScheduleLogEntity.class);
+		Paging page = (Paging) JSONObject.parseObject(jsonObject.getJSONObject("page").toJSONString(), Paging.class);
+		return scheduleJobService.findLogPage(page, logEntity);
+	}
+	
+	/**
+	 * 获取job的任务参数
+	 * @param jsonObject
+	 * @return
+	 */
+	@PostMapping(value="/para/list")
+	public ResponseBean getJobParaList( @RequestBody JSONObject jsonObject ){
+		int jobId = jsonObject.getInteger("jobId");
+		return new ResponseBean(true, 0, "请求成功", scheduleJobService.getParaList(jobId));
+	}
+	
 	
 	/**
 	 * 修改定时任务运行状态

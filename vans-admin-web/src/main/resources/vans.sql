@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50627
 File Encoding         : 65001
 
-Date: 2018-01-22 16:39:18
+Date: 2018-01-25 16:25:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,11 +30,14 @@ CREATE TABLE `sys_dict_entry` (
   `update_date` datetime DEFAULT NULL COMMENT '更新时间',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记\n1：删除\n0：未删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_dict_entry
 -- ----------------------------
+INSERT INTO `sys_dict_entry` VALUES ('1', 'SYS_DICT_SEX', 'male', '男', '1', '1', '2018-01-24 14:40:45', '2018-01-24 14:40:45', '0');
+INSERT INTO `sys_dict_entry` VALUES ('2', 'SYS_DICT_SEX', 'female', '女', '1', '2', '2018-01-24 14:40:57', '2018-01-24 14:40:57', '0');
+INSERT INTO `sys_dict_entry` VALUES ('3', 'SYS_DICT_SEX', 'unknown', '未知', '1', '3', '2018-01-24 14:41:28', '2018-01-24 14:41:28', '0');
 
 -- ----------------------------
 -- Table structure for `sys_dict_type`
@@ -48,11 +51,12 @@ CREATE TABLE `sys_dict_type` (
   `update_date` datetime DEFAULT NULL COMMENT '更新时间',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记\n1：删除\n0：未删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_dict_type
 -- ----------------------------
+INSERT INTO `sys_dict_type` VALUES ('1', 'SYS_DICT_SEX', '性别', '2018-01-24 14:25:56', '2018-01-24 14:25:56', '0');
 
 -- ----------------------------
 -- Table structure for `sys_login_log`
@@ -95,11 +99,24 @@ CREATE TABLE `sys_menu` (
   `update_date` datetime DEFAULT NULL COMMENT '更新时间',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记\n1：删除\n0：未删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
+INSERT INTO `sys_menu` VALUES ('1', null, null, '系统设置', '1', '', null, 'fa fa-cog', '1', '', '测试', '2018-01-24 12:03:44', '2018-01-24 12:03:47', '0');
+INSERT INTO `sys_menu` VALUES ('2', '1', '1,', '字典管理', '1', '/#/dict', 'iframe-tab', 'fa fa-navicon', '1', 'sys:dict:view', null, '2018-01-24 14:14:09', '2018-01-24 14:14:11', '0');
+INSERT INTO `sys_menu` VALUES ('3', '2', '1,2,', '修改', '1', null, null, null, '0', 'sys:dict:edit', null, '2018-01-24 14:16:02', '2018-01-24 14:16:04', '0');
+INSERT INTO `sys_menu` VALUES ('4', '1', '1,', '菜单管理', '2', '/#/menu', 'iframe-tab', 'fa fa-navicon', '1', 'sys:menu:view', null, '2018-01-24 15:12:11', '2018-01-24 15:12:14', '0');
+INSERT INTO `sys_menu` VALUES ('5', '4', '1,4,', '修改', '1', null, null, null, '0', 'sys:menu:edit', null, '2018-01-24 15:13:05', '2018-01-24 15:13:08', '0');
+INSERT INTO `sys_menu` VALUES ('6', '1', 'null1,', '角色管理', '3', '/#/role', 'iframe-tab', 'fa fa-navicon', '1', 'sys:role:view', '角色管理', '2018-01-24 15:50:52', '2018-01-24 15:50:52', '0');
+INSERT INTO `sys_menu` VALUES ('7', '6', 'null1,6,', '编辑', '1', null, 'iframe-tab', null, '0', 'sys:role:edit', '编辑角色', '2018-01-24 15:51:22', '2018-01-24 15:51:22', '0');
+INSERT INTO `sys_menu` VALUES ('8', '1', 'null1,', '用户管理', '4', '/#/user', 'iframe-tab', 'fa fa-navicon', '1', 'sys:user:list', '用户管理', '2018-01-24 16:27:10', '2018-01-24 16:27:50', '0');
+INSERT INTO `sys_menu` VALUES ('9', '8', 'null1,8,', '查看', '1', null, 'iframe-tab', null, '0', 'sys:user:view', null, '2018-01-24 16:28:14', '2018-01-24 16:28:14', '0');
+INSERT INTO `sys_menu` VALUES ('10', '8', 'null1,8,', '编辑', '2', null, 'iframe-tab', null, '0', 'sys:user:edit', null, '2018-01-24 16:28:38', '2018-01-24 16:28:38', '0');
+INSERT INTO `sys_menu` VALUES ('11', '8', 'null1,8,', '授权', '3', null, 'iframe-tab', null, '0', 'sys:user:auth', null, '2018-01-24 16:29:07', '2018-01-24 16:30:07', '0');
+INSERT INTO `sys_menu` VALUES ('12', null, null, '定时任务管理', '2', '', 'iframe-tab', 'fa fa-cog', '1', '', '定时任务管理', '2018-01-25 13:38:27', '2018-01-25 13:38:27', '0');
+INSERT INTO `sys_menu` VALUES ('13', '12', 'null12,', '定时任务', '1', '/#/timer', 'iframe-tab', 'fa fa-navicon', '1', '', null, '2018-01-25 13:39:40', '2018-01-25 13:39:40', '0');
 
 -- ----------------------------
 -- Table structure for `sys_operation_log`
@@ -139,11 +156,12 @@ CREATE TABLE `sys_role` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记\n1：删除\n0：未删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
+INSERT INTO `sys_role` VALUES ('1', 'ROLE_ADMIN', '超级管理员', '1', '超级管理员', '2018-01-24 11:31:01', '2018-01-24 16:29:36', '0');
 
 -- ----------------------------
 -- Table structure for `sys_role_menu`
@@ -158,6 +176,17 @@ CREATE TABLE `sys_role_menu` (
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
+INSERT INTO `sys_role_menu` VALUES ('1', '1');
+INSERT INTO `sys_role_menu` VALUES ('1', '2');
+INSERT INTO `sys_role_menu` VALUES ('1', '3');
+INSERT INTO `sys_role_menu` VALUES ('1', '4');
+INSERT INTO `sys_role_menu` VALUES ('1', '5');
+INSERT INTO `sys_role_menu` VALUES ('1', '6');
+INSERT INTO `sys_role_menu` VALUES ('1', '7');
+INSERT INTO `sys_role_menu` VALUES ('1', '8');
+INSERT INTO `sys_role_menu` VALUES ('1', '9');
+INSERT INTO `sys_role_menu` VALUES ('1', '10');
+INSERT INTO `sys_role_menu` VALUES ('1', '11');
 
 -- ----------------------------
 -- Table structure for `sys_schedule_job`
@@ -205,7 +234,7 @@ CREATE TABLE `sys_schedule_log` (
   `update_date` datetime DEFAULT NULL COMMENT '更新时间',
   `del_flag` varchar(10) DEFAULT NULL COMMENT '删除标记',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8 COMMENT='定时器运行时日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=534 DEFAULT CHARSET=utf8 COMMENT='定时器运行时日志表';
 
 -- ----------------------------
 -- Records of sys_schedule_log
@@ -252,11 +281,12 @@ CREATE TABLE `sys_user` (
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记\n1：删除\n0：未删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `login_name_UNIQUE` (`login_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
+INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$08$UIbl948v1vaFLzwr3Hea7uJECTdYsEA8gkxWxNgBLBVXbIG1ODyLO', '超级管理员', '514471352@qq.com', null, null, '1', '超级管理员', '2018-01-24 10:19:49', '2018-01-24 10:19:51', '0');
 
 -- ----------------------------
 -- Table structure for `sys_user_role`
@@ -271,3 +301,4 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('1', '1');

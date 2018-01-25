@@ -39,7 +39,7 @@ public class ResponseBean {
 		return isSuccess;
 	}
 
-	public void setSuccess(boolean isSuccess) {
+	public void setIsSuccess(boolean isSuccess) {
 		this.isSuccess = isSuccess;
 	}
 
